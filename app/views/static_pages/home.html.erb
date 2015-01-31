@@ -2,14 +2,21 @@
 
 <div class="center jumbotron">
 
-
   <h1>Kinesics</h1>
 
   <h2>
     Learn American Sign Language (ASL) in a fun and interactive way
   </h2>
+  
+  <% if !logged_in? %>
 
   <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+
+  <% else %>
+
+  <%= link_to "Play now!", signup_path, class: "btn btn-lg btn-primary" %>
+
+  <% end %>
 </div>
 
 <%= link_to image_tag("love_you_asl.gif", alt: "Love You ASL", size: "120"),
