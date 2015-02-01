@@ -5,13 +5,20 @@ class GameController < ApplicationController
 	before_action :set_sign, only: :check_answer  
 	before_action :get_random_sign, only: [:beginner, :leap]
 
+	respond_to :html, :js, :json
+
+	protect_from_forgery except: :check_answer_leap
+
+	ALLOWED_LETTERS = ['w', 'y', 'l', 'i', 'd', 'b', 'f', 'r', 'v', 'u']
 
 	def play
 	end
 
 
 	def leap
-		@sign = Sign.order("RANDOM()").first
+		@sign = Sign.order("RANDOM()").reject do |i|
+			!ALLOWED_LETTERS.include? i.symbol
+		end.first
 	end
 
 	def check_answer
@@ -25,8 +32,28 @@ class GameController < ApplicationController
 	end
 
 	def check_answer_leap
+		respond_to do |format|
+			if is_answer_right?(params[:game])
+				@current_user.update_attribute(:points, @current_user.points+10)
+				# puts "EH TRUE PORRRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				# flash[:success] = "Good Job! You just won 10 points!"
+				format.json {render json: '', status: :created}
+				format.html {redirect_to play_leap_path}
+				
+			else
+				# puts "EH FALSE PORRRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+				# flash[:danger] = 'Wrong answer!'
+				format.json { render json: '', status: :unprocessable_entity }
+				format.html {redirect_to play_leap_path}
+				
+			end
 
-		redirect_to play_leap_path
+
+
+		end
+
+		
+
 	end
 
 

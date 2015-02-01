@@ -7,17 +7,15 @@
 <div class="row">
 
 	<div class="col-md-6 col-md-offset-3">
-		<%= form_for(:game, url: play_leap_path) do |f| %>
-
 		<div class="text-center">
 			<p>Please make the sign for letter </p>
 			<h1><%= @sign.symbol.upcase %></h1>
 
 			<input id="game_id" type="hidden" name="game[id]" value="<%=@sign.id %>"/>
 
-			<%= f.submit "Submit Answer", class: "btn btn-primary" %>
+			<a href="/play/leap"><input name="commit" value="Submit Answer" class="btn btn-primary"></a>
 
-			<% end %>	<br/><br/>
+<br/><br/>
 			<div><a href="/play"><input name="commit" value="Choose Another Level" class="btn btn-info"></a></div>
 		</div>
 	</div>
@@ -67,15 +65,41 @@ function getFingerName(fingerType) {
 	}
 }
 
-function concatJointPosition(id, position) {
-	return id + ": " + position[0] + ", " + position[1] + ", " + position[2] + "<br>";
-}
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
 
-$(document).ready(function(){ 
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
 
-	var output = document.getElementById('output');
-	var frameString = "", handString = "", fingerString = "", letterString = "", angleString = "";
-	var hand, finger;
+    for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", params[key]);
+
+        form.appendChild(hiddenField);
+      }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+
+  function concatJointPosition(id, position) {
+   return id + ": " + position[0] + ", " + position[1] + ", " + position[2] + "<br>";
+ }
+
+ $(document).ready(function(){ 
+
+   var output = document.getElementById('output');
+   var frameString = "", handString = "", fingerString = "", letterString = "", angleString = "";
+   var hand, finger;
+   var xmlhttp  = new XMLHttpRequest();
 
     // Leap.loop uses browser's requestAnimationFrame
     var options = { enableGestures: true };
@@ -113,44 +137,77 @@ $(document).ready(function(){
         	extended[j] = finger.extended;
         	fingerString += "<br>";
         }
-        for (var i = 0; i < extended.length; i++) {
-          console.log("This is the value for finger 1: " + extended[i]);
-        }
+        // for (var i = 0; i < extended.length; i++) {
+        //   console.log("This is the value for finger " + i + ": " + extended[i]);
+        // }
         if((extended[0] === extended[4] === false) && (extended[1] === extended[2] === extended[3] === true)) {
-        	letterString = "W<br>";
+        	letterString = "W";
         } else if (extended[1] === extended[2] === extended[3] === false && extended[0] === extended[4] === true) {
-        	letterString = "Y<br>";
+        	letterString = "Y";
         } else if (extended[4] === extended[2] === extended[3] === false && extended[0] === extended[1] === true) {
-        	letterString = "L<br>";
+        	letterString = "L";
         } else if (extended[1] === extended[2] === extended[3] === extended[0] === false && extended[4] === true) {
-        	letterString = "I<br>";
+        	letterString = "I";
         } else if (extended[4] === extended[2] === extended[3] === extended[0] === false && extended[1] === true) {
-        	letterString = "D<br>";
+        	letterString = "D";
         } else if (extended[1] === extended[2] === extended[3] === extended[0] === true && extended[4] === false) {
-        	letterString = "B<br>";
+        	letterString = "B";
         } else if (extended[4] === extended[2] === extended[3] === true && extended[0] === extended[1] === false) {
-        	letterString = "F<br>";
+        	letterString = "F";
         } else if (extended[0] === extended[4] === extended[3] === false && extended[1] === extended[2] === true) {
         	if ((angle * 180 / Math.PI)<0) {
-        		letterString = "R<br>";
+        		letterString = "R";
         	} else if ((angle * 180 / Math.PI)>10) {
-        		letterString = "V<br>";
+        		letterString = "V";
         	} else {
-        		letterString = "U<br>";
+        		letterString = "U";
         	}
         } else {
-        	letterString = "<br>";
+        	letterString = "";
         }
         
         frameString = letterString;
         frameString += angleString;
-    }
-    
-    output.innerHTML = frameString;
-    
-});
+      }
+
+      output.innerHTML = frameString;
+
+      if (letterString!="") {
+        // params = {game: {id: <%= @sign.id%>, char: letterString}};
+        // $('html').die();
+        // console.log(params)
+        // post("/play/leap", params)
+
+
+        // xmlhttp.onreadystatechange=function()
+        // {
+        //   if (xmlhttp.status==201)
+        //   {
+        //     alert("You got the answer right!");
+        //   } else if (xmlhttp.status==422)  {
+        //     alert("You got the answer wrong!");
+        //   }
+        // }
+
+        if (letterString.toLowerCase()==='<%=@sign.symbol%>') {
+          alert("You got the answer right!");
+        } else {
+          alert("You got the answer wrong!");
+        }
+
+        xmlhttp.open("POST", "/play/leap", true); 
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        header = "game[id]=<%=@sign.id%>&game[char]=" + letterString;
+        console.log(header);
+        xmlhttp.send(header);
+        $('html').die()
+        // console.log(header);
+        // location.reload();
+
+      }
+
+    });
 });
 
 </script>
 
-<div id="output"></div>
