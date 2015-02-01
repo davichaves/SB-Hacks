@@ -10,7 +10,7 @@
 		<%= form_for(:game, url: play_beginner_path) do |f| %>
 
 		<div class="text-center">
-		<%= image_tag image_url(@sign.image) %> </div> <br/>
+		<%= image_tag image_url(@sign.image), size: '240' %> </div> <br/>
 
 		<%= f.text_field :char %>
 
@@ -18,9 +18,12 @@
 
 		<%= f.submit "Submit Answer", class: "btn btn-primary" %>
 		<% end %>
+		<br/>
+		<div class=""><a href="/play"><input name="commit" value="Choose Another Level" class="btn btn-info"></a></div>
 	</div>
 </div>
 <hr/>
 
 
 	Is this your <strong>first time playing?</strong> <%= link_to "Check out our tutorial", play_tutorial_path %>
+	<h5 class="text-right">All pictures credited to Mario Carneiro (Di gama)</h5>

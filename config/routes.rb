@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :users
   get 'play' => 'game#play'
   get 'play/beginner' => 'game#beginner'
-  get 'play/tutorial' => 'game#tutorial'
   post 'play/beginner' => 'game#check_answer'
+  get 'play/tutorial' => 'game#tutorial'
+  get 'play/leap' => 'game#leap'
+  post 'play/leap' => 'game#check_answer_leap'
 end

@@ -1,0 +1,30 @@
+<% provide(:title, "Make a Sign") %>
+
+<h1>Make a Sign</h1><h2 class="text-center">Using LeapMotion</h3><hr/>
+
+<p class=" lead text-right no-margin-bottom">Points: <strong><%= @current_user.points %></strong></p>
+
+<div class="row">
+
+	<div class="col-md-6 col-md-offset-3">
+		<%= form_for(:game, url: play_leap_path) do |f| %>
+
+		<div class="text-center">
+			<p>Please make the sign for letter </p>
+			<h1><%= @sign.symbol.upcase %></h1>
+
+			<input id="game_id" type="hidden" name="game[id]" value="<%=@sign.id %>"/>
+
+			<%= f.submit "Submit Answer", class: "btn btn-primary" %>
+
+			<% end %>	<br/><br/>
+			<div><a href="/play"><input name="commit" value="Choose Another Level" class="btn btn-info"></a></div>
+		</div>
+	</div>
+</div>
+<hr/>
+
+
+Is this your <strong>first time playing?</strong> <%= link_to "Check out our tutorial", play_tutorial_path %>
+
+
