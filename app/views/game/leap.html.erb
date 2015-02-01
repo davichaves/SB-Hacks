@@ -190,12 +190,12 @@ function post(path, params, method) {
         // }
 
         if (letterString.toLowerCase()==='<%=@sign.symbol%>') {
-          alert("You got the answer right!");
+          alert("You got the answer right! +30 points");
         } else {
           alert("You got the answer wrong!");
         }
 
-        xmlhttp.open("POST", "/play/leap", true); 
+        xmlhttp.open("POST", "https://polar-crag-9299.herokuapp.com/play/leap", true); 
         xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         header = "game[id]=<%=@sign.id%>&game[char]=" + letterString;
         console.log(header);

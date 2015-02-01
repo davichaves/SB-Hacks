@@ -4,6 +4,8 @@ class GameController < ApplicationController
 	before_action :current_user
 	before_action :set_sign, only: :check_answer  
 	before_action :get_random_sign, only: [:beginner, :leap]
+	before_action :set_control_filters, only: [:leap, :check_answer_leap]
+
 
 	respond_to :html, :js, :json
 
@@ -34,7 +36,7 @@ class GameController < ApplicationController
 	def check_answer_leap
 		respond_to do |format|
 			if is_answer_right?(params[:game])
-				@current_user.update_attribute(:points, @current_user.points+10)
+				@current_user.update_attribute(:points, @current_user.points+30)
 				# puts "EH TRUE PORRRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 				# flash[:success] = "Good Job! You just won 10 points!"
 				format.json {render json: '', status: :created}
@@ -58,6 +60,16 @@ class GameController < ApplicationController
 
 
 	private 
+
+	def set_control_filters 
+
+		headers['Access-Control-Allow-Origin'] = '*'
+		headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+		headers['Access-Control-Request-Method'] = '*'
+		headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+
+	end
+
 	def is_answer_right?(params)
 		((params[:char].downcase)==(Sign.find_by(id: params[:id]).symbol))? true: false
 	end
