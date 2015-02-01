@@ -28,3 +28,140 @@
 Is this your <strong>first time playing?</strong> <%= link_to "Check out our tutorial", play_tutorial_path %>
 
 
+
+<div id="output"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js"></script>
+<script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
+<script src="https://js.leapmotion.com/leap-plugins-0.1.6.1.js"></script>
+<script src="https://js.leapmotion.com/leap.rigged-hand-0.1.4.min.js"></script>
+<script type="text/javascript">
+
+function concatData(id, data) {
+	return id + ": " + data + "<br>";
+}
+
+function getFingerName(fingerType) {
+	switch(fingerType) {
+		case 0:
+		return 'Thumb';
+		break;
+
+		case 1:
+		return 'Index';
+		break;
+
+		case 2:
+		return 'Middle';
+		break;
+
+		case 3:
+		return 'Ring';
+		break;
+
+		case 4:
+		return 'Pinky';
+		break;
+	}
+}
+
+function concatJointPosition(id, position) {
+	return id + ": " + position[0] + ", " + position[1] + ", " + position[2] + "<br>";
+}
+
+$(document).ready(function(){ 
+
+	var output = document.getElementById('output');
+	var frameString = "", handString = "", fingerString = "", letterString = "", angleString = "";
+	var hand, finger;
+
+    // Leap.loop uses browser's requestAnimationFrame
+    var options = { enableGestures: true };
+    
+    // Main Leap Loop
+    Leap.loop(options, function(frame) {
+    	// frameString = concatData("frame_id", frame.id);
+    	// frameString += concatData("num_hands", frame.hands.length);
+    	// frameString += concatData("num_fingers", frame.fingers.length);
+    	// frameString += "<br>";
+
+
+
+      // Showcase some new V2 features
+      for (var i = 0, len = frame.hands.length; i < len; i++) {
+      	hand = frame.hands[i];
+
+      	var d1 = hand.indexFinger.proximal.direction(),
+      	d2 = hand.middleFinger.proximal.direction();
+
+      	var angle = Math.acos(Leap.vec3.dot(d1, d2));
+
+      	var cross = Leap.vec3.create();
+      	Leap.vec3.cross(cross, d1, d2);
+
+      	var dir = Leap.vec3.dot(hand.palmNormal, cross);
+
+      	if (dir < 0) {
+      		angle *= -1;
+      	}
+
+      	angleString = (angle ).toPrecision(2) + ' rad / ';
+      	angleString += (angle * 180 / Math.PI).toPrecision(2) + '°';
+      	angleString += '<br>'
+
+      	// handString = concatData("hand_type", hand.type);
+      	// handString += concatData("confidence", hand.confidence);
+      	// handString += concatData("pinch_strength", hand.pinchStrength);
+      	// handString += concatData("grab_strength", hand.grabStrength);
+
+      	// handString += '<br>';
+      	var extended = [];
+
+        // Helpers for thumb, pinky, etc.
+        // fingerString = concatJointPosition("finger_thumb_dip", hand.thumb.dipPosition);
+        for (var j = 0, len2 = hand.fingers.length; j < len2; j++) {
+        	finger = hand.fingers[j];
+        	// fingerString += concatData("finger_type", finger.type) + " (" + getFingerName(finger.type) + ") <br>";
+        	// fingerString += finger.extended;
+        	extended[j] = finger.extended;
+        	fingerString += "<br>";
+        }
+        if((extended[0] === extended[4] === false) && (extended[1] === extended[2] === extended[3] === true)) {
+        	letterString = "W<br>";
+        } else if (extended[1] === extended[2] === extended[3] === false && extended[0] === extended[4] === true) {
+        	letterString = "Y<br>";
+        } else if (extended[4] === extended[2] === extended[3] === false && extended[0] === extended[1] === true) {
+        	letterString = "L<br>";
+        } else if (extended[1] === extended[2] === extended[3] === extended[0] === false && extended[4] === true) {
+        	letterString = "I<br>";
+        } else if (extended[4] === extended[2] === extended[3] === extended[0] === false && extended[1] === true) {
+        	letterString = "D<br>";
+        } else if (extended[1] === extended[2] === extended[3] === extended[0] === true && extended[4] === false) {
+        	letterString = "B<br>";
+        } else if (extended[4] === extended[2] === extended[3] === true && extended[0] === extended[1] === false) {
+        	letterString = "F<br>";
+        } else if (extended[0] === extended[4] === extended[3] === false && extended[1] === extended[2] === true) {
+        	if ((angle * 180 / Math.PI)<0) {
+        		letterString = "R<br>";
+        	} else if ((angle * 180 / Math.PI)>10) {
+        		letterString = "V<br>";
+        	} else {
+        		letterString = "U<br>";
+        	}
+        } else {
+        	letterString = "<br>";
+        }
+        
+        // frameString += handString;
+        // frameString += fingerString;
+        frameString = letterString;
+        frameString += angleString;
+    }
+    
+    output.innerHTML = frameString;
+    
+});
+});
+
+</script>
+
+<div id="output"></div>
