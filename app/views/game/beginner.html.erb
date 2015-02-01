@@ -1,0 +1,27 @@
+<% provide(:title, "Select Level") %>
+
+<h1>Which Letter Is This?</h1><hr/>
+
+<p class=" lead text-right no-margin-bottom">Points: <strong><%= @current_user.points %></strong></p>
+
+<div class="row">
+
+	<div class="col-md-6 col-md-offset-3">
+		<%= form_for(:game, url: play_beginner_path) do |f| %>
+
+		<div class="text-center">
+		<%= image_tag image_url(@sign.image) %> </div> <br/>
+
+		<%= f.text_field :char %>
+
+		<input id="game_id" type="hidden" name="game[id]" value="<%=@sign.id %>"/>
+
+		<%= f.submit "Submit Answer", class: "btn btn-primary" %>
+		<% end %>
+	</div>
+</div>
+<hr/>
+
+<div class="row">
+	PS: Is this your <strong>first time playing?</strong> <%= link_to "Try our tutorial.", play_tutorial_path %>
+</div>

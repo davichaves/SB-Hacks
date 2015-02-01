@@ -11,17 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131194536) do
-
-  create_table "games", force: :cascade do |t|
-    t.integer  "points"
-    t.integer  "level"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "games", ["user_id"], name: "index_games_on_user_id"
+ActiveRecord::Schema.define(version: 20150131235826) do
 
   create_table "signs", force: :cascade do |t|
     t.string   "symbol"
@@ -33,9 +23,10 @@ ActiveRecord::Schema.define(version: 20150131194536) do
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "password_digest"
+    t.integer  "points",          default: 0
   end
 
 end

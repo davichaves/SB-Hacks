@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root                'static_pages#home'
   get    'help'    => 'static_pages#help'
   get    'about'   => 'static_pages#about'
@@ -8,5 +9,8 @@ Rails.application.routes.draw do
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
   resources :users
-  get 'play' => 'static_pages#play'
+  get 'play' => 'game#play'
+  get 'play/beginner' => 'game#beginner'
+  get 'play/tutorial' => 'game#tutorial'
+  post 'play/beginner' => 'game#check_answer'
 end

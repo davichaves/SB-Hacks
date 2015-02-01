@@ -1,0 +1,19 @@
+<% provide(:title, "Select Level") %>
+
+<h1>Select a Level</h1><hr/>
+
+
+	<p class=" lead text-right no-margin-bottom">Points: <strong><%= @current_user.points %></strong></p>
+
+<div class="row">
+	<ul>
+		<h2 class="lead"><li><%= link_to "Beginner", play_beginner_path %></li></h2>
+		<h2 class="lead"><li>Intermediate</li></h2>
+		<h2 class="lead"><li>Advanced</li></h2>
+	</ul>
+</div>
+<hr/>
+
+<div class="row">
+	PS: Is this your <strong>first time playing?</strong> <%= link_to "Try our tutorial.", play_tutorial_path %>
+</div>
