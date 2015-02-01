@@ -195,7 +195,7 @@ function post(path, params, method) {
           alert("You got the answer wrong!");
         }
 
-        xmlhttp.open("POST", "https://polar-crag-9299.herokuapp.com/play/leap", true); 
+        xmlhttp.open("POST", "/play/leap", true); 
         xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         header = "game[id]=<%=@sign.id%>&game[char]=" + letterString;
         console.log(header);
