@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131235826) do
+ActiveRecord::Schema.define(version: 20150201014932) do
 
   create_table "signs", force: :cascade do |t|
     t.string   "symbol"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150131235826) do
     t.datetime "updated_at",                  null: false
     t.string   "password_digest"
     t.integer  "points",          default: 0
+    t.datetime "last_login"
   end
 
 end

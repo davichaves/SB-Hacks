@@ -8,5 +8,24 @@ class User < ActiveRecord::Base
 	has_secure_password
 	validates :password, length: { minimum: 6 }
 
+	PENALTY = 10
+
+
+	def check_last_login_date 
+
+		if (self.last_login < 3.days.ago) 
+			self.remove_points
+		end
+	end
+
+private
+
+	def remove_points
+		if (self.points>=10)
+			self.update_attribute(:points, self.points-10)
+		else
+			self.update_attribute(:points, 0)
+		end
+	end
 
 end

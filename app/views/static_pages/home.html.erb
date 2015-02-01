@@ -4,9 +4,19 @@
 
   <h1>Kinesics</h1>
 
+  <% if !logged_in? %>
+
   <h2>
     Learn American Sign Language (ASL) in a fun and interactive way
   </h2>
+
+  <% else %>
+
+    <h2>Welcome back! We missed you. Are you ready to learn some signs?</h2>
+
+  <% end %>
+
+
   
   <% if !logged_in? %>
 
@@ -20,6 +30,6 @@
 </div>
 
 <%= link_to image_tag("love_you_asl.gif", alt: "Love You ASL", size: "120"),
-            '#' %>
+'#' %>
 
 `

@@ -2,6 +2,8 @@ module SessionsHelper
 
 	def log_in(user)
 		session[:user_id] = user.id
+		user.check_last_login_date 
+		user.update_attribute(:last_login, DateTime.now)
 	end
 
 	  # Returns the current logged-in user (if any).
