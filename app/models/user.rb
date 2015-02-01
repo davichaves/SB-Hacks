@@ -12,8 +12,7 @@ class User < ActiveRecord::Base
 
 
 	def check_last_login_date 
-
-		if (self.last_login < 3.days.ago) 
+		if (self.last_login && self.last_login < 3.days.ago) 
 			self.remove_points
 		end
 	end

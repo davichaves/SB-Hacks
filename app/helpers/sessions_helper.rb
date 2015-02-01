@@ -2,7 +2,7 @@ module SessionsHelper
 
 	def log_in(user)
 		session[:user_id] = user.id
-		user.check_last_login_date if user.last_login
+		user.check_last_login_date
 		user.update_attribute(:last_login, DateTime.now)
 	end
 
