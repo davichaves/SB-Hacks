@@ -11,7 +11,7 @@ class GameController < ApplicationController
 
 	protect_from_forgery except: :check_answer_leap
 
-	ALLOWED_LETTERS = ['w', 'y', 'l', 'i', 'd', 'b', 'f', 'r', 'v', 'u']
+	ALLOWED_LETTERS = ['w', 'y',  'i',  'v', 'u']
 
 	def play
 	end
