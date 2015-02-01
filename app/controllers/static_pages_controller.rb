@@ -5,7 +5,7 @@ class StaticPagesController < ApplicationController
 	def home
 		if logged_in?
 			@user = current_user
-			@top_users = User.order('points DESC')
+			@users = User.paginate(:page => params[:page], :per_page => 5).order('points DESC')
 
 		end
 	end

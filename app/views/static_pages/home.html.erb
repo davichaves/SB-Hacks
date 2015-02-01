@@ -18,11 +18,10 @@
   </aside>
   <aside class="col-md-8">
     <h3>Top Ranking</h3>
-    <% @top_users.each do |top_user| %>
+    
+    <% @users.each do |top_user| %>
     <section class="user_info">
-      
       <h1>
-
         <%= gravatar_for top_user %>
         <%= top_user.name %>
       </h1><br/>
@@ -31,6 +30,7 @@
       </h1>
     </section>
     <%end %>
+    <%= will_paginate @users %>
   </aside>
 </div>
 

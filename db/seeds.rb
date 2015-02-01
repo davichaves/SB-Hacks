@@ -5,3 +5,29 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+
+  FIRST_LETTER = 'a'
+  END_LETTER = 'z'
+
+#Users
+
+11.times do |n|
+  name  = Faker::Name.name
+  email = "example-#{n+1}@dcmm.org"
+  password = "password"
+  points = rand(500) + 1
+  User.create!(name: name,
+              email: email,
+              password:              password,
+              password_confirmation: password,
+              points: points
+            )
+end
+
+#Signs
+
+
+(FIRST_LETTER .. END_LETTER).each do |i|
+  		Sign.create(symbol: i, image: "letter-#{i}.jpg")
+  	end
