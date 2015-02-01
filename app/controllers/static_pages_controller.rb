@@ -2,16 +2,21 @@ class StaticPagesController < ApplicationController
 
 	before_action :logged_in_user, only: [:play]
 
-  def home
-  end
+	def home
+		if logged_in?
+			@user = current_user
+			@top_users = User.order('points DESC')
 
-  def help
-  end
+		end
+	end
 
-  def about
-  end
+	def help
+	end
 
-  def play
+	def about
+	end
 
-  end
+	def play
+
+	end
 end

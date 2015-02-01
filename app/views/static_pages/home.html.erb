@@ -1,35 +1,61 @@
+
+<% if logged_in? %>
+
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+        <%= gravatar_for @user %>
+        <strong><%= @user.name %></strong>
+
+      </h1><br/>
+      <h1>
+        Points: <strong><%= @user.points %></strong>
+      </h1>
+    </section>
+    <%= link_to "Play now!", play_path, class: "btn btn-lg btn-primary" %>
+  </aside>
+  <aside class="col-md-8">
+    <h3>Top Ranking</h3>
+    <% @top_users.each do |top_user| %>
+    <section class="user_info">
+      
+      <h1>
+
+        <%= gravatar_for top_user %>
+        <%= top_user.name %>
+      </h1><br/>
+      <h1>
+        Points: <strong><%= top_user.points %></strong>
+      </h1>
+    </section>
+    <%end %>
+  </aside>
+</div>
+
+<%else%>
 <% provide(:title, "Home") %>
 
 <div class="center jumbotron">
 
   <h1>Kinesics</h1>
 
-  <% if !logged_in? %>
-
   <h2>
     Learn American Sign Language (ASL) in a fun and interactive way
   </h2>
 
-  <% else %>
-
-    <h2>Welcome back! We missed you. Are you ready to learn some signs?</h2>
-
-  <% end %>
-
-
-  
-  <% if !logged_in? %>
-
   <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
 
-  <% else %>
-
-  <%= link_to "Play now!", play_path, class: "btn btn-lg btn-primary" %>
-
-  <% end %>
+  
 </div>
 
 <%= link_to image_tag("love_you_asl.gif", alt: "Love You ASL", size: "120"),
 '#' %>
 
-`
+
+
+<%end%>
+
+
+
