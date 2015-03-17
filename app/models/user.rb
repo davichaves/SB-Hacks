@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
 		end
 	end
 
-private
 
 	def remove_points
 		if (self.points>=10)
